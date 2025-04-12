@@ -10,6 +10,8 @@ function ProductList({ onHomeClick }) {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.items);
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const isInCart = (productName) =>
+        cartItems.some((item) => item.name === productName);
 
 
       
@@ -269,11 +271,16 @@ function ProductList({ onHomeClick }) {
            [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
          }));
       };
+
       
+
+
+
+
+
+
+
       
-
-
-
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -327,7 +334,23 @@ function ProductList({ onHomeClick }) {
                                 <img className="product-image" src={plant.image} alt={plant.name} />
                                 <div className="product-description">{plant.description}</div>
                                 <div className="product-cost">{plant.cost}</div>
-                                <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                
+                                <button
+                                    className="product-button"
+                                    onClick={() => handleAddToCart(plant)}
+                                    disabled={isInCart(plant.name)}
+                                    style={{
+                                        backgroundColor: isInCart(plant.name) ? 'gray' : 'green',
+                                        color: 'white',
+                                        cursor: isInCart(plant.name) ? 'not-allowed' : 'pointer',
+                                    }}
+                                    >
+                                    {isInCart(plant.name) ? 'Added to Cart' : 'Add to Cart'}
+                                </button>
+
+
+
+
                             </div>
                             ))}
                         </div>
